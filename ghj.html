@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <!-- Гарантирует корректное масштабирование на мобильных устройствах -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Карусель профилей со свайпом</title>
+  <style>
+    /* Сброс глобальных стилей */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      background: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    
+    /* Контейнер карусели */
+    .carousel {
+      position: relative;
+      width: 350px;
+      max-width: 95%;
+      overflow: hidden;
+      margin: 20px;
+    }
+    
+    /* Оболочка, содержащая все карточки */
+    .carousel-inner {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+    
+    /* Стили для карточки профиля */
+    .card {
+      min-width: 350px;
+      margin: 10px;
+      flex-shrink: 0;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+    
+    /* Картинка профиля – круглая */
+    .profile-pic {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto;
+      border: 3px solid #ddd;
+    }
+    
+    /* Имя с чекмарком */
+    .name {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 15px 0 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .name .checkmark {
+      width: 18px;
+      height: 18px;
+      margin-left: 8px;
+      background: #4CAF50;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px;
+    }
+    
+    .name .checkmark svg {
+      width: 12px;
+      height: 12px;
+      fill: #fff;
+    }
+    
+    /* Описание профиля */
+    .description {
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 15px;
+      padding: 0 10px;
+    }
+    
+    /* Секция с метриками */
+    .metrics {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 15px 0;
+      font-size: 16px;
+      color: #333;
+    }
+    
+    .metrics div {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .metrics svg {
+      width: 18px;
+      height: 18px;
+      fill: #FF5722;
+    }
+    
+    /* Кнопка Follow */
+    .follow-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .follow-btn:hover {
+      background: #43a047;
+    }
+    
+    /* Кнопки навигации карусели */
+    .carousel-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      border: none;
+      color: #fff;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 18px;
+      border-radius: 50%;
+      z-index: 1;
+    }
+    
+    .carousel-button.prev {
+      left: 10px;
+    }
+    
+    .carousel-button.next {
+      right: 10px;
+    }
+    
+    /* Адаптивность для мобильных устройств */
+    @media (max-width: 480px) {
+      .carousel, .card {
+        min-width: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="carousel">
+    <!-- Кнопка "Назад" -->
+    <button class="carousel-button prev">&lt;</button>
+    
+    <!-- Обёртка для карточек -->
+    <div class="carousel-inner">
+      <!-- Карточка профиля 1 -->
+      <div class="card">
+        <img src="https://via.placeholder.com/100" alt="Profile Picture" class="profile-pic">
+        <div class="name">
+          Sophie Bennett
+          <span class="checkmark">
+            <svg viewBox="0 0 24 24">
+              <path d="M20.285,6.708l-11.4,11.4l-5.172-5.171l1.414-1.414l3.758,3.757l9.986-9.986L20.285,6.708z"/>
+            </svg>
+          </span>
+        </div>
+        <div class="description">
+          Product Designer who focuses on simplicity & usability.
+        </div>
+        <div class="metrics">
+          <div class="likes">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42
+                    4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3
+                    16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55
+                    11.54L12 21.35z"/>
+            </svg>
+            312
+          </div>
+          <div class="comments">
+            <svg viewBox="0 0 24 24">
+              <path d="M21 6h-2v9H5v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1z"/>
+            </svg>
+            48
+          </div>
+        </div>
+        <button class="follow-btn">
+          Follow <span>+</span>
+        </button>
+      </div>
+      
+      <!-- Карточка профиля 2 -->
+      <div class="card">
+        <img src="https://via.placeholder.com/100" alt="Profile Picture" class="profile-pic">
+        <div class="name">
+          John Doe
+          <span class="checkmark">
+            <svg viewBox="0 0 24 24">
+              <path d="M20.285,6.708l-11.4,11.4l-5.172-5.171l1.414-1.414l3.758,3.757l9.986-9.986L20.285,6.708z"/>
+            </svg>
+          </span>
+        </div>
+        <div class="description">
+          UI/UX Designer passionate about user-centric design.
+        </div>
+        <div class="metrics">
+          <div class="likes">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42
+                    4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3
+                    16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55
+                    11.54L12 21.35z"/>
+            </svg>
+            256
+          </div>
+          <div class="comments">
+            <svg viewBox="0 0 24 24">
+              <path d="M21 6h-2v9H5v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1z"/>
+            </svg>
+            34
+          </div>
+        </div>
+        <button class="follow-btn">
+          Follow <span>+</span>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Кнопка "Вперёд" -->
+    <button class="carousel-button next">&gt;</button>
+  </div>
+
+  <script>
+    // Элементы управления каруселью
+    const prevButton = document.querySelector('.carousel-button.prev');
+    const nextButton = document.querySelector('.carousel-button.next');
+    const carouselInner = document.querySelector('.carousel-inner');
+    const cards = document.querySelectorAll('.card');
+    let index = 0;
+    
+    // Расчёт ширины карточки с учётом внешних отступов
+    function updateCardWidth() {
+      return cards[0].offsetWidth + 20;
+    }
+    
+    // Обновление позиции слайдера
+    function updateCarousel() {
+      const cardWidth = updateCardWidth();
+      carouselInner.style.transform = 'translateX(' + (-index * cardWidth) + 'px)';
+    }
+    
+    // Обработчики для кнопок "Назад" и "Вперёд"
+    prevButton.addEventListener('click', () => {
+      index = (index - 1 + cards.length) % cards.length;
+      updateCarousel();
+    });
+    
+    nextButton.addEventListener('click', () => {
+      index = (index + 1) % cards.length;
+      updateCarousel();
+    });
+    
+    // Переменные для отслеживания свайпа
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    // Фиксируем координату касания при начале жеста
+    carouselInner.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+    
+    // По окончании свайпа рассчитываем разницу
+    carouselInner.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    });
+    
+    // Обработка свайпа: если разница больше порога, переключаем слайды
+    function handleSwipe() {
+      const swipeThreshold = 50; // Порог в пикселях
+      if (touchStartX - touchEndX > swipeThreshold) {
+        // Свайп влево → следующая карточка
+        index = (index + 1) % cards.length;
+        updateCarousel();
+      } else if (touchEndX - touchStartX > swipeThreshold) {
+        // Свайп вправо → предыдущая карточка
+        index = (index - 1 + cards.length) % cards.length;
+        updateCarousel();
+      }
+    }
+    
+    // Пересчёт позиций при изменении размера окна
+    window.addEventListener('resize', updateCarousel);
+  </script>
+</body>
+</html>
